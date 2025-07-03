@@ -3,46 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login Data</title>
+  <title>Stored Login Data</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f0f8ff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .data-box {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      max-width: 400px;
-      text-align: center;
+      background: #f8f9fa;
+      padding: 40px;
     }
     h2 {
       color: #0077b6;
-      margin-bottom: 20px;
+      text-align: center;
+      margin-bottom: 30px;
     }
-    p {
-      margin: 10px 0;
-      font-size: 16px;
+    table {
+      width: 100%;
+      max-width: 800px;
+      margin: auto;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background: #0077b6;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background: #f1f1f1;
     }
   </style>
 </head>
 <body>
-  <div class="data-box">
-    <h2>Submitted Login Data</h2>
-    <p><strong>Username:</strong> <span id="showUsername"></span></p>
-    <p><strong>Password:</strong> <span id="showPassword"></span></p>
-    <p><strong>Timestamp:</strong> <span id="showTimestamp"></span></p>
-  </div>
+  <h2>Login Entries</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody id="dataTable"></tbody>
+  </table>
 
   <script>
-    document.getElementById("showUsername").textContent = sessionStorage.getItem("username") || "N/A";
-    document.getElementById("showPassword").textContent = sessionStorage.getItem("password") || "N/A";
-    document.getElementById("showTimestamp").textContent = sessionStorage.getItem("timestamp") || "N/A";
+    const tableBody = document.getElementById("dataTable");
+    const loginData = JSON.parse(localStorage.getItem("loginData")) || [];
+
+    if (loginData.length === 0) {
+      tableBody.innerHTML = "<tr><td colspan='4'>No login data found.</td></tr>";
+    } else {
+      loginData.forEach((entry, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${entry.username}</td>
+          <td>${entry.password}</td>
+          <td>${entry.timestamp}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
   </script>
 </body>
 </html>
