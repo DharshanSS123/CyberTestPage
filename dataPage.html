@@ -13,7 +13,23 @@
     h2 {
       color: #0077b6;
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
+    }
+    .actions {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    button {
+      background: #d90429;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #9e0031;
     }
     table {
       width: 100%;
@@ -39,6 +55,11 @@
 </head>
 <body>
   <h2>Login Entries</h2>
+
+  <div class="actions">
+    <button onclick="clearData()">Clear All Data</button>
+  </div>
+
   <table>
     <thead>
       <tr>
@@ -55,9 +76,14 @@
     const tableBody = document.getElementById("dataTable");
     const loginData = JSON.parse(localStorage.getItem("loginData")) || [];
 
-    if (loginData.length === 0) {
-      tableBody.innerHTML = "<tr><td colspan='4'>No login data found.</td></tr>";
-    } else {
+    function loadData() {
+      tableBody.innerHTML = "";
+
+      if (loginData.length === 0) {
+        tableBody.innerHTML = "<tr><td colspan='4'>No login data found.</td></tr>";
+        return;
+      }
+
       loginData.forEach((entry, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -69,6 +95,15 @@
         tableBody.appendChild(row);
       });
     }
+
+    function clearData() {
+      if (confirm("Are you sure you want to delete all login data?")) {
+        localStorage.removeItem("loginData");
+        location.reload(); // refresh page to update table
+      }
+    }
+
+    loadData();
   </script>
 </body>
 </html>
