@@ -156,16 +156,23 @@
       const password = document.getElementById('password').value;
       const timestamp = new Date().toLocaleString();
 
-      // Save login data to sessionStorage
-      sessionStorage.setItem("username", username);
-      sessionStorage.setItem("password", password);
-      sessionStorage.setItem("timestamp", timestamp);
+      // Retrieve old data from localStorage
+      let loginData = JSON.parse(localStorage.getItem("loginData")) || [];
 
-      // Open the dataPage.html in new tab
-      window.open("dataPage.html", "_blank");
+      // Add new entry
+      loginData.push({ username, password, timestamp });
+
+      // Save back to localStorage
+      localStorage.setItem("loginData", JSON.stringify(loginData));
+
+      alert("Login data saved! You can check it on dataPage.html.");
+      
+      // Optional: clear form
+      document.getElementById('loginForm').reset();
     });
   });
 </script>
+
 
 
 <body>
